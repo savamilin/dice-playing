@@ -1,0 +1,240 @@
+const maxPoint = 50;
+
+const messsageAboutGame =
+    "Two players is play up to 50 points.<br>" +
+    "Every time the game starts it isn't known who is playing. <br>" +
+    "At the end play button will appear to start again.<br> " +
+    "<span>GOOD LUCK!!</span> :))";
+
+document.getElementById('message').innerHTML = messsageAboutGame
+
+var playerTurn = 0
+
+// generation random number between 0 and 1
+var randomPlayer = Math.floor(Math.random() * 2)
+console.log('random player', randomPlayer)
+
+
+const randomTurn = [true, false]
+    // generation random player(who is next on the move)
+var nextTurn = randomTurn[randomPlayer]
+
+var playerPoints1 = 0
+var playerPoints2 = 0
+
+// take players names
+
+var playerName1 = prompt('Player 1 name?')
+var playerName2 = prompt('Player 2 name?')
+
+
+// clearing white space
+if (playerName1 != null && playerName2 != null) {
+    var player1 = playerName1.trim()
+    var player2 = playerName2.trim()
+} else {
+    var player1 = playerName1
+    var player2 = playerName2
+}
+// if player click cancle set defalut name
+if (player1 === null || player2 === null) {
+
+    player1 = 'Miki Mouse'
+    player2 = 'Miki Mouse'
+}
+
+
+// if user clik only ok without name
+if (player1 === '')
+    player1 = 'Miki Mouse'
+
+if (player2 === '')
+    player2 = 'Miki Mouse'
+    // 
+
+const players = [player1, player2]
+
+console.log(player1)
+
+function message() {
+
+    const whoPlay = document.getElementById(`who-plays-${randomPlayer}`)
+    console.log('whooo', whoPlay)
+    const p = document.createElement('p')
+    p.innerHTML = 'You play: ' + '<span>' + players[randomPlayer] + '</span>'
+
+    whoPlay.appendChild(p)
+}
+
+function showPlayer(id, name) {
+
+    const playerName = document.getElementById(id)
+    const paragrafForName = document.createElement('p')
+    paragrafForName.innerHTML = `Player name: <span>${name}</span> `
+
+    playerName.appendChild(paragrafForName)
+}
+
+
+function showPlayersPoints(id, playerName, playerPoints) {
+
+    const getParagrafToShowPoints = document.getElementById(id)
+    getParagrafToShowPoints.innerHTML = `${playerName} have <span>${playerPoints}</span> points`
+}
+
+function playAgain(id) {
+
+    document.getElementById(id).disabled = true
+
+
+    document.getElementById("play-again").addEventListener('click', function() {
+
+        window.location.reload()
+    })
+}
+
+function winner(id, player) {
+    const winner = document.getElementById(id)
+    winner.style.color = 'red'
+    winner.innerHTML = `${player} is a WINNER!! `
+}
+
+function nextPlay(id, player) {
+    const next = document.getElementById(id)
+    const nextParagraf = document.createElement('p')
+    nextParagraf.innerHTML = `Player <span>${player}</span> is playing`
+
+    next.appendChild(nextParagraf)
+}
+
+
+function clearPlayer(id) {
+    if (document.getElementById(id) != null)
+        document.getElementById(id).innerHTML = ''
+}
+
+
+// put the message who is next to play
+message()
+
+// hide button
+document.getElementById('play-again').style.display = 'none'
+
+
+showPlayer('player-name-1', player1)
+showPlayer('player-name-2', player2)
+
+showPlayersPoints('points-1', player1, playerPoints1)
+showPlayersPoints('points-2', player2, playerPoints2)
+
+// after 2 secunds messege about who play is gone
+setTimeout(function() {
+
+    document.getElementById(`who-plays-${randomPlayer}`).outerHTML = ''
+
+}, 2000)
+
+document.getElementById('roll-1').addEventListener('click', gamePlayer1)
+
+function gamePlayer1() {
+    // check to se if points is under 50 if not game end
+    if (playerPoints1 <= 50) {
+
+        // we chack to see if player have 3 roll and if he is in move
+        if (playerTurn != 3 && nextTurn) {
+
+
+            // clear next player
+            clearPlayer('next-1')
+
+
+
+            // every time user push button we add one
+            playerTurn++
+
+
+            const dice = document.getElementById('dice-1')
+            console.log(dice)
+
+            var randomDice = Math.floor(Math.random() * 6) + 1
+            console.log(randomDice)
+
+            dice.src = `img/dice-${randomDice}.png`
+
+            playerPoints1 += randomDice
+            console.log('points1 ', playerPoints1)
+
+            showPlayersPoints('points-1', player1, playerPoints1)
+
+        } else {
+
+            nextPlay('next-0', player2)
+
+            document.getElementById('roll-1').disabled = true
+            document.getElementById('roll-2').disabled = false
+
+            playerTurn = 0
+            nextTurn = false
+        }
+    } else {
+
+
+        winner('winner-0', player1)
+
+        document.getElementById('play-again').style.display = 'block'
+
+        playAgain('roll-1')
+
+    }
+}
+
+document.getElementById('roll-2').addEventListener('click', gamePlayer2)
+
+function gamePlayer2() {
+
+    // check to se if points is under 50 if not game end
+    if (playerPoints2 <= 50) {
+
+        // we chack to see if player have 3 roll and if he is in move
+        if (playerTurn != 3 && nextTurn === false) {
+
+            // clear next player
+            clearPlayer('next-0')
+
+            // every time user push button we add one
+            playerTurn++
+
+            const dice = document.getElementById('dice-2')
+            console.log(dice)
+
+            var randomDice = Math.floor(Math.random() * 6) + 1
+            console.log(randomDice)
+
+            dice.src = `img/dice-${randomDice}.png`
+
+            playerPoints2 += randomDice
+            console.log('points1 ', playerPoints2)
+
+            showPlayersPoints('points-2', player2, playerPoints2)
+
+        } else {
+
+            nextPlay('next-1', player1)
+
+            document.getElementById('roll-2').disabled = true
+            document.getElementById('roll-1').disabled = false
+
+            playerTurn = 0
+            nextTurn = true
+
+        }
+    } else {
+
+        winner('winner-1', player2)
+
+        document.getElementById('play-again').style.display = 'block'
+
+
+        playAgain('roll-2')
+    }
+}

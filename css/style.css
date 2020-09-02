@@ -1,0 +1,68 @@
+body {
+    /* background-color: rgb(209, 209, 209); */
+    font-size: 1.5rem;
+    background-image: url('../img/back-img/brett-jordan-4aB1nGtD_Sg-unsplash.jpg');
+    background-size: cover;
+}
+
+h1 {
+    width: 440px;
+    margin: auto;
+    text-align: center;
+    text-shadow: 1px 3px red;
+}
+
+#main {
+    width: 1200px;
+    margin: auto;
+    display: flex;
+    justify-content: space-between;
+}
+
+#player-2 {
+    margin-left: 600px;
+}
+
+button {
+    display: inline-block;
+}
+
+.btn {
+    width: 300px;
+    background-color: white;
+    text-align: center;
+    margin-top: 10px;
+    padding: 10px;
+    font-size: 15px;
+    border: 0;
+    transition-duration: 1s;
+    cursor: pointer;
+}
+
+span {
+    color: red;
+}
+
+.btn:hover {
+    background-color: black;
+    color: wheat;
+    box-shadow: 2px 4px red;
+}
+
+#flex-button {
+    width: 1200px;
+    margin: auto;
+    display: flex;
+    justify-content: space-between;
+}
+
+#play-again {
+    display: block;
+    padding: 10px 40px;
+    cursor: pointer;
+    border-radius: 10px;
+}
+
+#message {
+    margin: 50px 0 0 50px;
+}
